@@ -1,6 +1,7 @@
 library(shiny)
 library(dplyr)
 library(DAAG)
+library(ggplot2)
 data("leafshape", package="DAAG")
 ds <- mutate(leafshape, arch=as.factor(arch))
 levels(ds$arch) <- c("plagiotropic", "othotropic")
@@ -41,8 +42,8 @@ shinyServer(function(input, output) {
        yvar <- ds[, input$YVar]
        
        fit <- lm(yvar ~ xvar)
-       paste("lm(", input$YVar,"~", input$XVar,
-             ") has residual standard error", 
+       paste0("lm(", input$YVar,"~", input$XVar,
+             ") has residual standard error ", 
              round(summary(fit)[[6]],3))
    })
 })

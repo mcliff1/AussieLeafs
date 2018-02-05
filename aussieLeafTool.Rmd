@@ -1,0 +1,71 @@
+---
+title: "Australian Leaf Analysis Tool"
+author: "Matt Cliff"
+date: "February 5, 2018"
+output:
+  slidy_presentation: default
+  ioslides_presentation: default
+---
+
+```{r setup, include=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+require(dplyr)
+require(ggplot2)
+```
+
+## Australian Leaf Analysis Tool
+
+This presentation describes a tool that can be used to analysis the attributes of Leaves of Australian trees.  This is based on the paper
+
+** King, D.A. and Maindonald, J.H. 1999. Tree architecture in relation to leaf dimensions and tree stature in temperate and tropical rain forests. Journal of Ecology 87: 1012-1024.
+
+The tool provides controls to select which variables to plot and apply the *location* and *arch* factors.
+
+## Study Details
+
+The study takes architecture and leaf dimensions (petiole length, blade length, and blade width) of 403 tree species studied at six locations. The Petiole measurement is from the stalk for branch to the base of the leaf.
+
+
+The *arch* attribute represents arrangement of the leaves
+
+* *orthotropic* three dimensional arrangements of leaves about scending twigs
+* *plagiotropic* leaves arranged in planes usually along sides of horizontal twigs
+
+
+## Tool
+
+The tool provides a left side control panel that lets you select one of a Title, and for each of the *X* and *Y* variables, one of 6 observations 
+
+* Blade Length
+* Petiole Length
+* Blade Width
+* Log of Blade Length
+* Log Petiole Length
+* Log Blade Width
+
+A radio button contrl to choose if a factor should be used for color coding.
+
+A radio control if the smoothed means should also be included.
+
+Finally there are input boxes for the labels for the *X* and *Y* axes.
+
+The chart can be saved as a *png* format for future use.
+
+## Example Plot
+This is an example of a graph that can be generated with the tool
+
+```{r examplePlot, echo=FALSE, warning=FALSE}
+data("leafshape", package="DAAG")
+ds <- mutate(leafshape, arch=as.factor(arch))
+levels(ds$arch) <- c("plagiotropic", "othotropic")
+
+ggplot(data=ds, 
+       aes(x=logpet, y=loglen, color=arch)) +
+    labs(title = "(log) Comparision of Petiole and Blade Length",
+         x = "Log Petiole Length", 
+         y = "Log of Blade Length",
+         color="Leaf Architecture") +
+    geom_point(size=2, alpha=.5) +
+    geom_smooth(method="loess")
+```
+

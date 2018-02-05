@@ -5,7 +5,12 @@ data("leafshape", package="DAAG")
 ds <- mutate(leafshape, arch=as.factor(arch))
 levels(ds$arch) <- c("plagiotropic", "othotropic")
 
-varChoices <- list("Blade Length (mm)" = "bladelen", "petiole", "bladewid", "logwid", "logpet", "loglen")
+varChoices <- list("Blade Length (mm)" = "bladelen", 
+                   "Petiole length (mm)" = "petiole",
+                   "Leaf Width (mm)" = "bladewid", 
+                   "Log of Length" = "loglen", 
+                   "Log of Petiole" = "logpet", 
+                   "Log of Width" = "logwid")
 
 
 shinyUI(fluidPage(
@@ -23,7 +28,7 @@ shinyUI(fluidPage(
                        choices=varChoices, selected="loglen"),
           radioButtons("Factor", "Variable for Factor",
                        choices=list("none", "location", "arch")),
-          radioButtons("WithLoess", "include fits",
+          radioButtons("WithLoess", "Include smoothed means?",
                        choices=list("yes", "no")),
           textInput("XLab", "Input X Label", value="default x"),
           textInput("YLab", "Input Y Label", value="default y")
@@ -31,9 +36,11 @@ shinyUI(fluidPage(
       
       # Show a plot of the generated distribution
       mainPanel(
-         h1("Scatter Plot"),
+         h1("Chart Generation Tool"),
+         p("Update information in the side panel and the graph will be automatically updated"),
          plotOutput("distPlot"),
-         p("Linear Model fit"),
+         p("To save: right clight \"Save Image\" and use png format"),
+         br(),
          textOutput("model")
       )
    )
